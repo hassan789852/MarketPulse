@@ -1,0 +1,80 @@
+name: iOS CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ios-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select an installed stable Xcode
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Prefer the documented hosted image toolchain. Never download an SDK in CI.
+          if [[ -d /Applications/Xcode_26.3.app/Contents/Developer ]]; then
+            echo 'DEVELOPER_DIR=/Applications/Xcode_26.3.app/Contents/Developer' >> "$GITHUB_ENV"
+          else
+            echo "DEVELOPER_DIR=$(xcode-select -p)" >> "$GITHUB_ENV"
+          fi
+      - name: Inspect toolchain and select an installed iPhone
+        shell: bash
+        run: |
+          set -euo pipefail
+          xcodebuild -version
+          swift --version
+          xcodebuild -showsdks
+          xcrun simctl list devices available -j > /tmp/marketpulse-devices.json
+          python3 - <<'PY'
+          import json, os
+          devices = json.load(open('/tmp/marketpulse-devices.json'))['devices']
+          candidates = []
+          for runtime, items in devices.items():
+              if '.iOS-' not in runtime:
+                  continue
+              version = tuple(map(int, runtime.split('.iOS-')[1].split('-')))
+              if version < (18, 0):
+                  continue
+              for device in items:
+                  if device.get('isAvailable') and device['name'].startswith('iPhone'):
+                      candidates.append((version, device['name'], device['udid']))
+          if not candidates:
+              raise SystemExit('No supported iPhone simulator is installed on this runner.')
+          _, name, udid = sorted(candidates, reverse=True)[0]
+          print(f'Using {name}: {udid}')
+          with open(os.environ['GITHUB_ENV'], 'a') as output:
+              output.write(f'MARKETPULSE_SIMULATOR={udid}\n')
+          PY
+      - name: List project and build for testing
+        run: |
+          set -euo pipefail
+          xcodebuild -list -project MarketPulse.xcodeproj
+          xcodebuild build-for-testing -project MarketPulse.xcodeproj -scheme MarketPulse \
+            -destination "platform=iOS Simulator,id=$MARKETPULSE_SIMULATOR" \
+            -derivedDataPath build/DerivedData CODE_SIGNING_ALLOWED=NO
+      - name: Unit and deterministic UI tests
+        run: |
+          set -euo pipefail
+          xcodebuild test-without-building -project MarketPulse.xcodeproj -scheme MarketPulse \
+            -destination "platform=iOS Simulator,id=$MARKETPULSE_SIMULATOR" \
+            -derivedDataPath build/DerivedData -resultBundlePath build/MarketPulse.xcresult \
+            -parallel-testing-enabled NO -collect-test-diagnostics never \
+            -test-timeouts-enabled YES -maximum-test-execution-time-allowance 120 \
+            CODE_SIGNING_ALLOWED=NO
+      - name: Preserve test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: MarketPulse-test-results
+          path: build/MarketPulse.xcresult
+          if-no-files-found: ignore
