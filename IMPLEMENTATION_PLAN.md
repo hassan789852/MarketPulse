@@ -6,7 +6,7 @@
 - [x] Re-read audit result bundles and authenticate the requested GitHub account.
 - [x] Verify the current complete suite and Release build: 27 unit + 5 UI PASS after simulator reboot; Release PASS. Explicit portrait-geometry waits isolate UI tests without removing assertions. Initial missed-tap failures and limits are recorded in VALIDATION.
 - [x] Create the requested initial commit on `main`, then publish only this directory to the authorized public repository (`b5d94a6`, `hassan789852/MarketPulse`).
-- [ ] Inspect the real GitHub Actions run, fix any failures and verify public source/documentation/screenshots.
+- [x] Inspect real GitHub Actions, fix the Swift 6.2 initializer-access compilation failure, and verify the successful run at `fc3cb1e`: 27 unit + 5 UI tests, zero failures/skips. Public source/documentation/screenshots and a clean-clone Release build verified. Evidence: [run 41030613961](https://github.com/hassan789852/MarketPulse/actions/runs/41030613961) and VALIDATION.md.
 
 Publication changes: UI test launch/rotation synchronization, documentation/evidence, and an explicit EchoValidator initializer after hosted Xcode 26.3 exposed a synthesized-access-level difference. No product redesign or new features. Historical checkpoints below describe their own dates.
 

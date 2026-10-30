@@ -130,6 +130,8 @@ The app intentionally supports one scene, so one foreground/background lifecycle
 
 `.github/workflows/ios-ci.yml` builds and runs unit and deterministic UI tests on `macos-15`, chooses an installed stable Xcode and an available supported simulator, and preserves `.xcresult` artifacts. The [hosted image inventory](https://github.com/actions/runner-images/blob/main/images/macos/macos-15-Readme.md) informs the preferred toolchain. No secrets, SDK downloads or Duo runtime assumptions are required. Check the [actual workflow runs](https://github.com/hassan789852/MarketPulse/actions/workflows/ios-ci.yml) and [validation record](VALIDATION.md) for verified results; local passes do not establish a hosted CI pass.
 
+[Verified hosted run](https://github.com/hassan789852/MarketPulse/actions/runs/41030613961): **27 unit-test functions + 5 UI tests passed**, with zero failures/skips, on Xcode 26.3 / Swift 6.2.4 and iPhone SE (3rd generation) / iOS 26.2. The badge above reflects current workflow status; the validation record identifies the tested commit and retained evidence.
+
 This directory is the standalone repository root. Generated builds and private signing material are ignored. No external dependencies or generator are needed to open the checked-in Xcode project.
 
 No open-source license has been selected. [NOTICES.md](NOTICES.md) records the current licensing status and platform/service attribution; publication does not implicitly grant a license.

@@ -1,6 +1,7 @@
 # Final audit evidence
 
 - [publication-local-test-summary.json](publication-local-test-summary.json): fresh 2026-10-30 publication verification, 27 unit-test functions plus 5 UI tests passing. See [VALIDATION.md](../../VALIDATION.md) for the preceding simulator-input failure and final commands.
+- [publication-hosted-ci-test-summary.json](publication-hosted-ci-test-summary.json): unmodified `xcresulttool get test-results summary` output from the artifact of [GitHub Actions run 41030613961](https://github.com/hassan789852/MarketPulse/actions/runs/41030613961), commit `fc3cb1ecbb4929fa095ea2c1deb675fb6dbed7cf`. All 27 unit-test functions and 5 UI tests passed on iPhone SE (3rd generation) / iOS 26.2: 32 functions, 46 invocations including parameterized cases, zero failures/skips.
 
 Small actual execution records, retained without build products or personal filesystem paths:
 
@@ -8,4 +9,4 @@ Small actual execution records, retained without build products or personal file
 - [audit-real-echo.txt](audit-real-echo.txt): complete fresh stdout from the production-source diagnostic requiring 75 accepted Postman echoes. This is not UI-test fixture output.
 - [audit-build-inputs.sha256](audit-build-inputs.sha256): SHA-256 of the 45 application/project/resource/test/diagnostic inputs at audit completion. They matched the clean source export then. Later control-alignment changes are documented separately in VALIDATION.md; this historical manifest is intentionally not rewritten to imply those changes were part of the earlier audit.
 
-Full local bundles/logs remain outside the repository at paths recorded in [AUDIT.md](../../AUDIT.md). They may be removed by the operating system because they are in `/tmp`; these portable summaries, source and screenshots remain in the project. The summaries are evidence of local execution, not a GitHub Actions result.
+Full local bundles/logs remain outside the repository at paths recorded in [AUDIT.md](../../AUDIT.md). They may be removed by the operating system because they are in `/tmp`; these portable summaries, source and screenshots remain in the project. Only the explicitly identified hosted CI summary is a GitHub Actions result; the other summaries document local execution.
