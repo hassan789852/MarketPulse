@@ -20,7 +20,9 @@ The initial two complete attempts had one large-text UI failure: the synthesized
 
 Pre-publication checks: source/resources/shared scheme complete; relative Markdown links valid; no secrets, personal home paths, private email addresses, signing material, assessment documents or unwanted build products in the candidate files. Git author identity uses the requested GitHub username and GitHub noreply address. The demonstration MP4 and actual simulator PNGs are intentional review artifacts. No reuse license was added.
 
-Hosted CI is **pending** until the initial public push and actual workflow execution. The dated sections below are historical evidence, including their original unpublished/CI-unverified status.
+The public repository is [hassan789852/MarketPulse](https://github.com/hassan789852/MarketPulse), initially published at `b5d94a6d003433f1117a1a5dc45cddbb2e725e22`. Unauthenticated clone and HTTP reads of source, project, documentation and README images succeeded. The README image table was visually verified on GitHub. A Release build from the clean public clone also passed with Xcode 27.1.
+
+The [first hosted run](https://github.com/hassan789852/MarketPulse/actions/runs/41030095210) failed during compilation on Xcode 26.3 / Swift 6.2.4 before running tests: its compiler synthesized a private memberwise initializer for `EchoValidator` because the ledger contains private stored properties. An explicit internal `init(sessionID:symbols:)` preserves the intended construction boundary and default empty ledger without exposing replay state. All 27 existing unit tests and the Release build passed locally again after this fix (`MarketPulse-CICompatibility.xcresult`; `-only-testing:MarketPulseTests`, otherwise the same commands above). A subsequent hosted run must pass before CI is declared successful. The dated sections below are historical evidence, including their original unpublished/CI-unverified status.
 
 ## Control-alignment follow-up — 2026-10-29
 

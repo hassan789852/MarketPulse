@@ -30,6 +30,11 @@ struct EchoValidator: Sendable {
     private var pending: [UUID: PriceMessage] = [:]
     private var lastSequence: UInt64 = 0
 
+    init(sessionID: UUID, symbols: Set<String>) {
+        self.sessionID = sessionID
+        self.symbols = symbols
+    }
+
     var pendingCount: Int { pending.count }
     var oldestSentAt: Date? { pending.values.compactMap { Self.date($0.sentAt) }.min() }
 

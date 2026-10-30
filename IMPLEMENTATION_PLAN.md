@@ -5,10 +5,10 @@
 - [x] Inspect standalone Git root, source/resources, relative documentation links and exclusions; scan candidate files for secrets, personal paths and unwanted artifacts.
 - [x] Re-read audit result bundles and authenticate the requested GitHub account.
 - [x] Verify the current complete suite and Release build: 27 unit + 5 UI PASS after simulator reboot; Release PASS. Explicit portrait-geometry waits isolate UI tests without removing assertions. Initial missed-tap failures and limits are recorded in VALIDATION.
-- [ ] Create the requested initial commit on `main`, then publish only this directory to the authorized public repository.
+- [x] Create the requested initial commit on `main`, then publish only this directory to the authorized public repository (`b5d94a6`, `hassan789852/MarketPulse`).
 - [ ] Inspect the real GitHub Actions run, fix any failures and verify public source/documentation/screenshots.
 
-Expected changes: the UI test launch/rotation synchronization, publication documentation/evidence, and CI configuration only if hosted execution exposes a compatibility problem. No product redesign or new features. Historical checkpoints below describe their own dates.
+Publication changes: UI test launch/rotation synchronization, documentation/evidence, and an explicit EchoValidator initializer after hosted Xcode 26.3 exposed a synthesized-access-level difference. No product redesign or new features. Historical checkpoints below describe their own dates.
 
 ## Follow-up — centered feed controls
 
